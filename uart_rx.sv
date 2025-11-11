@@ -3,7 +3,6 @@
 module uart_rx
   #(parameter
     /*
-     You can specify the following three parameters.
      1. DATA_WIDTH : width of data that is transmited by this module
      2. BAUD_RATE  : baud rate of output uart signal
      3. CLK_FREQ   : freqency of input clock signal
@@ -20,8 +19,6 @@ module uart_rx
    (uart_if.rx  rxif,
     input logic clk,
     input logic rstn);
-
-   //-----------------------------------------------------------------------------
    // noise removing filter
    function majority5(input [4:0] val);
       case(val)
@@ -45,7 +42,7 @@ module uart_rx
       endcase
    endfunction
 
-   //-----------------------------------------------------------------------------
+
    // description about input signal
    logic [1:0] sampling_cnt;
    logic [4:0] sig_q;
@@ -68,7 +65,7 @@ module uart_rx
       end
    end
 
-   //----------------------------------------------------------------
+ 
    // description about receive UART signal
    typedef enum logic [1:0] {STT_DATA,
                              STT_STOP,
@@ -91,11 +88,11 @@ module uart_rx
       end
       else begin
 
-         //-----------------------------------------------------------------------------
+
          // 3-state FSM
          case(state)
 
-           //-----------------------------------------------------------------------------
+  
            // state      : STT_DATA
            // behavior   : deserialize and recieve data
            // next state : when all data have recieved -> STT_STOP
@@ -116,7 +113,7 @@ module uart_rx
               end
            end
 
-           //-----------------------------------------------------------------------------
+    
            // state      : STT_STOP
            // behavior   : watch stop bit
            // next state : STT_WAIT
@@ -129,7 +126,7 @@ module uart_rx
               end
            end
 
-           //-----------------------------------------------------------------------------
+
            // state      : STT_WAIT
            // behavior   : watch start bit
            // next state : when start bit is observed -> STT_DATA
@@ -150,7 +147,7 @@ module uart_rx
 
    assign rx_done = (state == STT_STOP) && (clk_cnt == 0);
 
-   //-----------------------------------------------------------------------------
+
    // description about output signal
    logic [DATA_WIDTH-1:0] data_r;
    logic                  valid_r;
